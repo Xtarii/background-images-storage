@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
   assetPrefix: isProduction ? "/background-images-storage" : "",
   basePath: isProduction ? "/background-images-storage" : "",
 
+  images: {
+    unoptimized: true
+  },
+
   output: "export",
   reactStrictMode: true
 };
