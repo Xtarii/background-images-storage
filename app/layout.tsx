@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { config } from "../next.config";
+import config from "../next.config";
 import localFont from "next/font/local";
 import "./globals.css";
 
