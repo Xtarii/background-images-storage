@@ -1,5 +1,7 @@
 {
   "name": "background-images",
+  "homepage": "https://xtarii.github.io/background-images-storage",
+
   "version": "0.1.0",
   "private": true,
   "scripts": {
