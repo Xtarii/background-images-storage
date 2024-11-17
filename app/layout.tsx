@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import nextConfig from "../next.config";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -30,10 +29,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-         <base href={nextConfig.basePath} />
-      </head>
-
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
