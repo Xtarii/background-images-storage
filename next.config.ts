@@ -8,12 +8,8 @@ const isProduction = process.env.NODE_ENV === "production";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  assetPrefix: isProduction ? "/background-images-storage" : "",
+  assetPrefix: "./",
   basePath: isProduction ? "/background-images-storage" : "",
-
-  images: {
-    unoptimized: true
-  },
 
   output: "export",
   reactStrictMode: true
