@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import config from "../next.config";
+import nextConfig from "../next.config";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-         <base href="config.basePath" />
+         <base href="nextConfig.basePath" />
       </head>
 
       <body
