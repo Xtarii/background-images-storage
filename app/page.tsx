@@ -10,7 +10,7 @@ export default function Home() {
           <h1>Hello World - Nav bar</h1>
 
           <Image
-            src={"/images/Real Hot guy - sea.jpg"}
+            src={"https://xtarii.github.io/background-images-storage/.images/Real%20Hot%20guy%20-%20sea.jpg"}
             alt="Guy"
             width={150}
             height={150}
@@ -20,7 +20,7 @@ export default function Home() {
 
         <Image
           className="dark:invert"
-          src="/next.svg"
+          src="https://xtarii.github.io/background-images-storage/next.svg"
           alt="Next.js logo"
           width={180}
           height={38}
@@ -46,7 +46,7 @@ export default function Home() {
           >
             <Image
               className="dark:invert"
-              src="/vercel.svg"
+              src="https://xtarii.github.io/background-images-storage/vercel.svg"
               alt="Vercel logomark"
               width={20}
               height={20}
@@ -72,7 +72,7 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            src="/file.svg"
+            src="https://xtarii.github.io/background-images-storage/file.svg"
             alt="File icon"
             width={16}
             height={16}
@@ -87,7 +87,7 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            src="/window.svg"
+            src="https://xtarii.github.io/background-images-storage/window.svg"
             alt="Window icon"
             width={16}
             height={16}
@@ -102,7 +102,7 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            src="/globe.svg"
+            src="https://xtarii.github.io/background-images-storage/globe.svg"
             alt="Globe icon"
             width={16}
             height={16}
