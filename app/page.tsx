@@ -8,6 +8,13 @@ export default function Home() {
         {/* Navbar */}
         <nav>
           <h1>Hello World - Nav bar</h1>
+
+          <Image
+            src={"/images/Real Hot guy - sea.jpg"}
+            alt="Guy"
+            width={150}
+            height={150}
+          />
         </nav>
 
 
