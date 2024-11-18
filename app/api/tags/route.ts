@@ -28,6 +28,10 @@ export async function POST(req: NextRequest) : Promise<Response> {
         await writeData(file, newData); // Creates new file with specified tag
     }else {
         // Appends Data
+        if(oldData.tags[data.id]) {
+            const message: response<null> = { status: false, message: "Tag already exists" };
+            return Response.json(message);
+        }
         oldData.tags[data.id] = data.value;
         await writeData(file, oldData); // Overrides old data with pushed item
     }

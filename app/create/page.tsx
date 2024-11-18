@@ -5,7 +5,10 @@
  * and adding that content to the site.
  */
 "use client";
+import { getTags } from "@/components/tags/tags";
+import path from "path";
 import { FormEvent, ReactElement, useRef } from "react";
+import { v7 } from "uuid";
 
 
 
@@ -18,21 +21,27 @@ export default function Create() : ReactElement {
         <h1>Create New Item</h1>
 
 
-        <form ref={ref} onSubmit={(e: FormEvent<HTMLFormElement>) => {
+        <form ref={ref} onSubmit={async (e: FormEvent<HTMLFormElement>) => {
             e.preventDefault();
 
 
             // Get Form Data
             const data = new FormData(e.currentTarget);
-            const image = data.get("image");
+            const image = data.get("image") as File;
             const name = data.get("name");
+            const tag = data.get("tag")?.toString();
+
 
             // Get Image Data
+            const arrayBuffer = await image.arrayBuffer();
+            const buffer = new Uint8Array(arrayBuffer);
 
             // Create new Item
             const item = {
-                name: name,
-                image: image
+                title: name,
+                UUID: v7(),
+
+                image: buffer
             };
 
             console.log(item); // DEBUG
@@ -45,36 +54,49 @@ export default function Create() : ReactElement {
              *
              * every tag has a sub-folder with a file: tag.json
              * that file will tell what files is located in that folder
+             *
+             *
+             * Image URLS are located as:
+             * UUID_TAG / imgs / CUSTOM_NAME - UUID_IMAGE . jpg
              */
             ///
 
-            // const d: Tag = {
-            //     UUID: "UUID"
-            // }
 
-            // fetch("/api/tags", {
-            //     headers: {
-            //         "Content-Type": "application/json"
-            //     },
+            if(!tag) return;
+            const TAG = await getTags(tag);
 
-            //     method: "post",
-            //     body: JSON.stringify({id: "test1", value: d})
-            // }).then(async value => console.log(await value.json()))
+            const imageURL = path.join(TAG.UUID, "imgs", `${name}-${item.UUID}.jpg`);
+            console.log(imageURL);
 
-            // fetch("/api/tags", {
-            //     method: "get"
-            // }).then(async res => console.log(await res.json()))
 
-            // fetch("/api/tags", {
-            //     method: "delete",
-            //     body: JSON.stringify({id: "test1"})
-            // }).then(async res => console.log(await res.json()))
+            const res = await fetch("/api/items", {
+                headers: { "Content-Type": "application/json" },
+
+                method: "post",
+                body: JSON.stringify({tagID: "guys"})
+            })
+
+
+
+            // const uuid = v7();
+            // console.log(uuid);
+
+            // addTag("guys", { UUID: uuid }).then(res => console.log(res));
+
+
+
+            // getTags().then(value => console.log(value));
+            // getTags("test").then(value => console.log(value));
+            // getTagsRaw().then(value => console.log(value));
+
+            // deleteTag("guys");
 
 
 
             // Redirect to other page
             ref.current?.reset(); // Clears Form
         }}>
+            <input type="text" name="tag" required />
             <input type="text" name="name" required />
             <input type="file" name="image" required />
 

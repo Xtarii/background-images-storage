@@ -60,4 +60,5 @@ export async function createDirectory(directory: string) {
 
     // Create sub file for holding items
     await writeData<ItemsFile>(path.join(directory, "items.json"), { items: [] });
+    mkdirSync(path.join(process.cwd(), directory, "imgs"), { recursive: true }); // Creates Images Directory
 }
