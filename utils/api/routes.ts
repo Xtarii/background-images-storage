@@ -8,7 +8,7 @@ import path from "path";
 /**
  * API Routes Base Path
  */
-export const base = process.env.NODE_ENV === "production" ? "/background-images-storage/" : "";
+export const base = process.env.NODE_ENV === "production" ? "/background-images-storage" : "";
 
 
 
