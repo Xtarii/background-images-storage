@@ -8,7 +8,7 @@ import path from "path";
 /**
  * API Routes Base Path
  */
-export const base = process.env.NODE_ENV === "production" ? "" : "";
+export const base = process.env.NODE_ENV === "production" ? "/background-images-storage/" : "";
 
 
 
@@ -19,9 +19,9 @@ export const APIs = {
     /**
      * Tags API route
      */
-    tags: path.join(base, "/api/tags"),
+    tags: (base + "/api/tags"),
     /**
      * Items API route
      */
-    items: path.join(base, "/api/items")
+    items: (base + "/api/items")
 }
