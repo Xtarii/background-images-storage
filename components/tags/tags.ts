@@ -1,3 +1,4 @@
+import { APIs } from "@/utils/api/routes";
 import { Tag, TagsFile } from "@/utils/dataTypes";
 
 
@@ -10,7 +11,7 @@ import { Tag, TagsFile } from "@/utils/dataTypes";
  * @returns Response
  */
 export async function addTag(id: string, value: Tag) : Promise<any> {
-    const res = await fetch("/api/tags", {
+    const res = await fetch(APIs.tags, {
         headers: { "Content-Type": "application/json" },
         method: "post",
         body: JSON.stringify({id, value})
@@ -28,7 +29,7 @@ export async function addTag(id: string, value: Tag) : Promise<any> {
  * @returns Response
  */
 export async function deleteTag(id: string) : Promise<any> {
-    const res = await fetch("/api/tags", {
+    const res = await fetch(APIs.tags, {
         method: "delete",
         body: JSON.stringify({ id })
     });
@@ -65,7 +66,7 @@ export async function getTags(id: string) : Promise<Tag>;
 export async function getTags() : Promise<TagsFile>;
 
 export async function getTags(id?: string) : Promise<TagsFile | Tag> {
-    const res = await fetch("/api/tags", { method: "get" });
+    const res = await fetch(APIs.tags, { method: "get" });
     const data: TagsFile = (await res.json()).data;
     if(!id) return data; // Returns all data, else only the data with ID
     return data.tags[id];
@@ -86,6 +87,6 @@ export async function getTags(id?: string) : Promise<TagsFile | Tag> {
  * @returns Response
  */
 export async function getTagsRaw() : Promise<any> {
-    const res = await fetch("/api/tags", { method: "get" });
+    const res = await fetch(APIs.tags, { method: "get" });
     return await res.json();
 }

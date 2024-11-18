@@ -6,6 +6,7 @@
  */
 "use client";
 import { getTags } from "@/components/tags/tags";
+import { APIs } from "@/utils/api/routes";
 import path from "path";
 import { FormEvent, ReactElement, useRef } from "react";
 import { v7 } from "uuid";
@@ -69,7 +70,7 @@ export default function Create() : ReactElement {
             console.log(imageURL);
 
 
-            const res = await fetch("/api/items", {
+            const res = await fetch(APIs.items, {
                 headers: { "Content-Type": "application/json" },
 
                 method: "post",
