@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) : Promise<Response> {
     const data: {id: string, value: Tag} = await req.json();
 
     // Constructs new Data
-    const oldData = await readData(file);
+    const oldData = await readData<TagsFile>(file);
     if(!oldData) {
         const newData: TagsFile = {tags: {}};
         newData.tags[data.id] = data.value; // Adds data
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) : Promise<Response> {
 
 /// Reads tags from tags list
 export async function GET() : Promise<Response> {
-    const res = await readData(file);
+    const res = await readData<TagsFile>(file);
     if(!res) {
         const message: response<null> = { status: false, message: "Could not read tags" };
         return Response.json(message);
@@ -54,7 +54,7 @@ export async function GET() : Promise<Response> {
 /// Removes tag from tags list
 export async function DELETE(req: NextRequest) : Promise<Response> {
     const data: { id: string } = await req.json();
-    const oldData = await readData(file);
+    const oldData = await readData<TagsFile>(file);
     if(!oldData) {
         const message: response<null> = { status: false, message: "Could not remove tag" };
         return Response.json(message);
