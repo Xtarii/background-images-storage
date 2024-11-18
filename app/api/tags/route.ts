@@ -6,6 +6,11 @@ import path from "path";
 
 
 
+/// Configs
+export const dynamic = "force-static";
+
+
+
 /// Tag file
 const file = "/public/items/tags.json";
 
