@@ -5,8 +5,7 @@
  * and adding that content to the site.
  */
 "use client";
-import { getTags } from "@/components/tags/tags";
-import { APIs } from "@/utils/api/routes";
+import { addTag, deleteTag, getTags } from "@/components/tags/tags";
 import path from "path";
 import { FormEvent, ReactElement, useRef } from "react";
 import { v7 } from "uuid";
@@ -30,7 +29,7 @@ export default function Create() : ReactElement {
             const data = new FormData(e.currentTarget);
             const image = data.get("image") as File;
             const name = data.get("name");
-            const tag = data.get("tag")?.toString();
+            const tagID = data.get("tag")?.toString();
 
 
             // Get Image Data
@@ -63,35 +62,13 @@ export default function Create() : ReactElement {
             ///
 
 
-            if(!tag) return;
-            const TAG = await getTags(tag);
+            if(!tagID) return;
+            const tag = await getTags(tagID);
+            if(!tag) return; // Stops if there is no tag found
 
-            const imageURL = path.join(TAG.UUID, "imgs", `${name}-${item.UUID}.jpg`);
+
+            const imageURL = path.join(tag.UUID, "imgs", `${name}-${item.UUID}.jpg`);
             console.log(imageURL);
-
-
-            const res = await fetch(APIs.items, {
-                headers: { "Content-Type": "application/json" },
-
-                method: "post",
-                body: JSON.stringify({tagID: "guys"})
-            })
-
-
-
-            // const uuid = v7();
-            // console.log(uuid);
-
-            // addTag("guys", { UUID: uuid }).then(res => console.log(res));
-
-
-
-            // getTags().then(value => console.log(value));
-            // getTags("test").then(value => console.log(value));
-            // getTagsRaw().then(value => console.log(value));
-
-            // deleteTag("guys");
-
 
 
             // Redirect to other page

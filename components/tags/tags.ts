@@ -1,22 +1,31 @@
-import { APIs } from "@/utils/api/routes";
-import { Tag, TagsFile } from "@/utils/dataTypes";
+import { supabase } from "@/utils/api/routes";
+import { ItemsFile, Tag, TagsFile } from "@/utils/dataTypes";
+import { readData, writeData } from "@/utils/supabase/handler";
 
 
 
 /**
- * Adds Tag to tag list
+ * Adds tag to tag list
  *
- * @param id Tag ID, the name of the tag
+ * @param id Tag ID
  * @param value Tag object
- * @returns Response
+ * @returns Upload status
  */
-export async function addTag(id: string, value: Tag) : Promise<any> {
-    const res = await fetch(APIs.tags, {
-        headers: { "Content-Type": "application/json" },
-        method: "post",
-        body: JSON.stringify({id, value})
-    });
-    return await res.json();
+export async function addTag(id: string, value: Tag) : Promise<{status: boolean, message: string}> {
+    // Read old data
+    const old = await readData<TagsFile>("/tags.json");
+    let newData: TagsFile; // New Data, old data will be written to this as well
+
+    if(!old) newData = {tags: {}};
+    else newData = old; // Copies old data to new data
+    newData.tags[id] = value;
+
+    // Creates Folder with tags
+    await writeData<ItemsFile>(`/${value.UUID}/items.json`, { items: [] });
+
+    const result = await writeData("/tags.json", newData); // Writes to database
+    if(result === false) return { status: false, message: "Could not upload tag" };
+    return { status: true, message: "Uploaded tag" };
 }
 
 /**
@@ -28,12 +37,29 @@ export async function addTag(id: string, value: Tag) : Promise<any> {
  * @param id Tag ID, the name of the tag
  * @returns Response
  */
-export async function deleteTag(id: string) : Promise<any> {
-    const res = await fetch(APIs.tags, {
-        method: "delete",
-        body: JSON.stringify({ id })
-    });
-    return await res.json();
+export async function deleteTag(id: string) : Promise<{status: boolean, message: string}> {
+    const old = await readData<TagsFile>("/tags.json");
+    if(!old) return { status: false, message: "Could not remove tag" };
+    const newData: TagsFile = {tags: {}};
+
+    // Overrides old data with new data
+    for(const tag in old.tags) if(tag !== id) newData.tags[tag] = old.tags[tag];
+    const response = await writeData("/tags.json", newData);
+
+    // Remove old directory
+    if(old.tags[id]) {
+        const items = await supabase.storage.from("items").list(`/${old.tags[id].UUID}/`);
+        if(!items.error) {
+            const list = items.data.map(file => `/${old.tags[id].UUID}/${file.name}`);
+            await supabase.storage.from("items").remove(list);
+        }
+    }
+
+
+
+    // Status Message
+    if(response === false) return { status: false, message: "Could not remove tag" };
+    return { status: true, message: "Removed tag" };
 }
 
 
@@ -65,11 +91,12 @@ export async function getTags(id: string) : Promise<Tag>;
  */
 export async function getTags() : Promise<TagsFile>;
 
-export async function getTags(id?: string) : Promise<TagsFile | Tag> {
-    const res = await fetch(APIs.tags, { method: "get" });
-    const data: TagsFile = (await res.json()).data;
-    if(!id) return data; // Returns all data, else only the data with ID
-    return data.tags[id];
+export async function getTags(id?: string) : Promise<TagsFile | Tag | null> {
+    const res = await readData<TagsFile>("/tags.json");
+
+    if(!res) return null; // Returns no Tag or Tag Data, no error needed
+    else if(!id) return res; // Returns all data, else only the data with ID
+    return res.tags[id];
 }
 
 
@@ -87,6 +114,6 @@ export async function getTags(id?: string) : Promise<TagsFile | Tag> {
  * @returns Response
  */
 export async function getTagsRaw() : Promise<any> {
-    const res = await fetch(APIs.tags, { method: "get" });
-    return await res.json();
+    const res = await readData<TagsFile>("/tags.json");
+    return res;
 }
