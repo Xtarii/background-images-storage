@@ -5,7 +5,8 @@
  * and adding that content to the site.
  */
 "use client";
-import { addTag, deleteTag, getTags } from "@/components/tags/tags";
+import { deleteItem, storeItem } from "@/utils/supabase/items/items";
+import { getTags } from "@/utils/supabase/tags/tags";
 import path from "path";
 import { FormEvent, ReactElement, useRef } from "react";
 import { v7 } from "uuid";
@@ -28,20 +29,22 @@ export default function Create() : ReactElement {
             // Get Form Data
             const data = new FormData(e.currentTarget);
             const image = data.get("image") as File;
-            const name = data.get("name");
+            const name = data.get("name")?.toString();
             const tagID = data.get("tag")?.toString();
+
+            if(tagID === undefined || name === undefined || image === null) return;
 
 
             // Get Image Data
             const arrayBuffer = await image.arrayBuffer();
-            const buffer = new Uint8Array(arrayBuffer);
+            // const buffer = new Uint8Array(arrayBuffer);
 
             // Create new Item
             const item = {
                 title: name,
                 UUID: v7(),
 
-                image: buffer
+                image: arrayBuffer
             };
 
             console.log(item); // DEBUG
@@ -62,13 +65,12 @@ export default function Create() : ReactElement {
             ///
 
 
-            if(!tagID) return;
+
             const tag = await getTags(tagID);
             if(!tag) return; // Stops if there is no tag found
 
-
-            const imageURL = path.join(tag.UUID, "imgs", `${name}-${item.UUID}.jpg`);
-            console.log(imageURL);
+            // storeItem(tagID, item);
+            console.log(await deleteItem(tagID, item.UUID));
 
 
             // Redirect to other page
