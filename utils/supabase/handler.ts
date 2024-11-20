@@ -20,10 +20,11 @@ export async function readData<T extends TagsFile | ItemsFile>(file: string) : P
  *
  * @param file File to write to
  * @param data Data to store
+ * @param [cache="3600"] Result life time, the amount of time to store the result in memory for faster loading.
  * @returns Result
  */
-export async function writeData<T extends TagsFile | ItemsFile>(file: string, data: T) : Promise<boolean | { status: boolean, data: { id: string, path: string, fullPath: string }}> {
-    return await writeRawData(file, JSON.stringify(data));
+export async function writeData<T extends TagsFile | ItemsFile>(file: string, data: T, cache: string = "3600") : Promise<boolean | { status: boolean, data: { id: string, path: string, fullPath: string }}> {
+    return await writeRawData(file, JSON.stringify(data), cache);
 }
 
 
@@ -41,12 +42,13 @@ export async function writeData<T extends TagsFile | ItemsFile>(file: string, da
  *
  * @param file File
  * @param data Data
+ * @param [cache="3600"] Result life time, the amount of time to store the result in memory for faster loading.
  * @returns Result
  */
-export async function writeRawData(file: string, data: string | ArrayBuffer) : Promise<boolean | { status: boolean, data: { id: string, path: string, fullPath: string }}> {
+export async function writeRawData(file: string, data: string | ArrayBuffer, cache: string = "3600") : Promise<boolean | { status: boolean, data: { id: string, path: string, fullPath: string }}> {
     const result = await supabase.storage.from("items").upload(file, data, {
         upsert: true,
-        cacheControl: "3600"
+        cacheControl: cache
     });
     if(result.error) return false;
     return { status: true, data: result.data };

@@ -1,7 +1,8 @@
-import { ItemsFile } from "@/utils/dataTypes";
+import { Item, ItemsFile } from "@/utils/dataTypes";
 import { readData, writeData, writeRawData } from "../handler";
 import { getTags } from "../tags/tags";
 import path from "path";
+import { supabase } from "@/utils/api/routes";
 
 
 
@@ -37,14 +38,25 @@ export async function storeItem(tagID: string, data: { title: string, UUID: stri
 }
 
 
-export async function deleteItem(tagID: string, itemUUID: string) {
+
+/**
+ * Deletes Item and removes item data
+ *
+ * @param tagID Tag ID, tag name
+ * @param item Item object
+ * @returns Response
+ */
+export async function deleteItem(tagID: string, item: Item) : Promise<boolean | { status: boolean, data: string }> {
     const tagObject = await getTags(tagID);
     const old = await readData<ItemsFile>(`/${tagObject.UUID}/items.json`);
     if(!old) return false; // No file found
 
     const newList: ItemsFile = {items: []};
-    console.log(old);
-    for(const item in old.items) {
-        console.log(item);
-    }
+    for(const item of old.items) if(item.UUID !== item.UUID) newList.items.push(item)
+
+    // Removes Image, item itself is auto removed
+    await supabase.storage.from("items").remove([item.imageURL]);
+    writeData(`/${tagObject.UUID}/items.json`, newList); // Stores new Data
+
+    return { status: true, data: "Removed item from list" };
 }

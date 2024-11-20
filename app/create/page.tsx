@@ -40,9 +40,10 @@ export default function Create() : ReactElement {
             // const buffer = new Uint8Array(arrayBuffer);
 
             // Create new Item
+            const uuid = v7();
             const item = {
                 title: name,
-                UUID: v7(),
+                UUID: uuid,
 
                 image: arrayBuffer
             };
@@ -70,8 +71,6 @@ export default function Create() : ReactElement {
             if(!tag) return; // Stops if there is no tag found
 
             // storeItem(tagID, item);
-            console.log(await deleteItem(tagID, item.UUID));
-
 
             // Redirect to other page
             ref.current?.reset(); // Clears Form
