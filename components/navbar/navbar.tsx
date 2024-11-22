@@ -4,7 +4,7 @@ import { ReactElement } from "react";
 
 
 export default function Navbar() : ReactElement {
-    const base = process.env.NODE_ENV === "production" ? "https://xtarii.github.io/background-images-storage/" : ""
+    const base = process.env.MODE === "production" ? "https://xtarii.github.io/background-images-storage/" : ""
     const links = {
         home: path.join(base, "/"),
         post: path.join(base, "/post")
