@@ -14,6 +14,8 @@ import { v7 } from "uuid";
 export default function Create() : ReactElement {
     const ref = useRef<HTMLFormElement>(null);
 
+    console.log(process.env.NEXT_PUBLIC_NODE_ENV)
+
 
 
     return(<div className="mt-24">
