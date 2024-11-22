@@ -30,9 +30,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env: # Variables
-      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      NODE_ENV: ${{ vars.NODE_ENV }}
+      NEXT_PUBLIC_SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      NEXT_PUBLIC_NODE_ENV: ${{ vars.NODE_ENV }}
 
     steps:
       - name: Checkout
