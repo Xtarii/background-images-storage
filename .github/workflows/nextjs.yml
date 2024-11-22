@@ -29,6 +29,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      env:
+        SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+
+        NODE_ENV: ${{ vars.NODE_ENV }}
+
       - name: Checkout
         uses: actions/checkout@v4
       - name: Detect package manager
