@@ -16,7 +16,7 @@ export default function Create() : ReactElement {
 
 
 
-    return(<div className="mt-16">
+    return(<div className="mt-24">
         <form ref={ref} onSubmit={async (e: FormEvent<HTMLFormElement>) => {
             e.preventDefault();
 
