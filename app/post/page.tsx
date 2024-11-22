@@ -5,9 +5,7 @@
  * and adding that content to the site.
  */
 "use client";
-import { deleteItem, storeItem } from "@/utils/supabase/items/items";
-import { getTags } from "@/utils/supabase/tags/tags";
-import path from "path";
+import { storeItem } from "@/utils/supabase/items/items";
 import { FormEvent, ReactElement, useRef } from "react";
 import { v7 } from "uuid";
 
