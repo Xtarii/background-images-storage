@@ -37,7 +37,7 @@ jobs:
     steps:
       - name: Debug environment variables
         run: |
-          echo "NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}"
+          echo "NEXT_PUBLIC_SUPABASE_URL: ${{ vars.SUPABASE_URL }}"
 
 
       - name: Checkout
