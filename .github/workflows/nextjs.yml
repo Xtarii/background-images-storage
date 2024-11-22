@@ -35,6 +35,11 @@ jobs:
       NEXT_PUBLIC_NODE_ENV: ${{ vars.NODE_ENV }}
 
     steps:
+      - name: Debug environment variables
+        run: |
+          echo "NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}"
+
+
       - name: Checkout
         uses: actions/checkout@v4
       - name: Detect package manager
