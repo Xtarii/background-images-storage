@@ -5,22 +5,36 @@
  * and adding that content to the site.
  */
 "use client";
+import SpinningWheel from "@/components/loadingbars/spinning";
+import MessageBox from "@/components/messages/messagebox";
+import { links } from "@/utils/api/routes";
 import { storeItem } from "@/utils/supabase/items/items";
-import { FormEvent, ReactElement, useRef } from "react";
+import { FormEvent, ReactElement, useRef, useState } from "react";
 import { v7 } from "uuid";
 
 
 
 export default function Create() : ReactElement {
     const ref = useRef<HTMLFormElement>(null);
+    const [ loading, setLoading ] = useState<boolean>(false);
+    const [ messageBox, showMessageBox ] = useState<boolean>(false);
 
-    console.log(process.env.NEXT_PUBLIC_NODE_ENV)
 
 
+    return(<div className="mt-16">
+        {/* Loading Bar */}
+        { loading && <SpinningWheel /> }
 
-    return(<div className="mt-24">
+        {messageBox && <MessageBox title="Uploaded Item" onClose={() => showMessageBox(false)}>
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                Your Item was uploaded and can now be found under <a className="text-blue-500" href={links.explore}>Explore</a>!
+            </p>
+        </MessageBox>}
+
+        {/* Form Element */}
         <form ref={ref} onSubmit={async (e: FormEvent<HTMLFormElement>) => {
             e.preventDefault();
+            setLoading(true);
 
 
             // Get Form Data
@@ -37,6 +51,8 @@ export default function Create() : ReactElement {
 
             // Redirect to other page
             ref.current?.reset(); // Clears Form
+            setLoading(false);
+            showMessageBox(true);
         }}
 
         className="max-w-sm mx-auto"
