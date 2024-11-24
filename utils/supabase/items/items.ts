@@ -60,3 +60,20 @@ export async function deleteItem(tagID: string, item: Item) : Promise<boolean | 
 
     return { status: true, data: "Removed item from list" };
 }
+
+
+
+
+
+/**
+ * Get all items of tag
+ *
+ * @param tagID Tag ID, tag name
+ * @returns Items list
+ */
+export async function getItems(tagID: string) : Promise<Item[]> {
+    const tag = await getTags(tagID);
+    const items = await readData<ItemsFile>(`/${tag.UUID}/items.json`);
+    if(items) return items.items;
+    return [];
+}

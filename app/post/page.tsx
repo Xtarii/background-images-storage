@@ -47,7 +47,8 @@ export default function Create() : ReactElement {
             // Store Data
             const arrayBuffer = await image.arrayBuffer();
             const uuid = v7();
-            await storeItem(tagID, { title: name, UUID: uuid, image: arrayBuffer });
+            const res = await storeItem(tagID, { title: name, UUID: uuid, image: arrayBuffer });
+            console.log(res); // DEBUG
 
             // Redirect to other page
             ref.current?.reset(); // Clears Form
