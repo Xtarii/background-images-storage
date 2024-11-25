@@ -18,7 +18,7 @@ export async function storeItem(tagID: string, data: { title: string, UUID: stri
 
     // Generates Image URL
     const imageURL = path.join(tagObject.UUID, "imgs", `${data.title}-${data.UUID}.jpg`);
-    const res = await writeRawData(imageURL, data.image);
+    const res = await writeRawData(imageURL, data.image, "0");
 
     // Adds item to items list
     const old = await readData<ItemsFile>(`/${tagObject.UUID}/items.json`);
@@ -28,11 +28,11 @@ export async function storeItem(tagID: string, data: { title: string, UUID: stri
             UUID: data.UUID,
             imageURL
         });
-        await writeData<ItemsFile>(`/${tagObject.UUID}/items.json`, old);
+        await writeData<ItemsFile>(`/${tagObject.UUID}/items.json`, old, "0");
     }else {
         await writeData<ItemsFile>(`/${tagObject.UUID}/items.json`, {
             items: [{title: data.title, UUID: data.UUID, imageURL}]
-        });
+        }, "0");
     }
     return res;
 }
@@ -56,7 +56,7 @@ export async function deleteItem(tagID: string, item: Item) : Promise<boolean | 
 
     // Removes Image, item itself is auto removed
     await supabase.storage.from("items").remove([item.imageURL]);
-    writeData(`/${tagObject.UUID}/items.json`, newList); // Stores new Data
+    writeData(`/${tagObject.UUID}/items.json`, newList, "0"); // Stores new Data
 
     return { status: true, data: "Removed item from list" };
 }
