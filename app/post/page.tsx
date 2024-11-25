@@ -29,6 +29,9 @@ export default function Create() : ReactElement {
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
                 Your Item was uploaded and can now be found under <a className="text-blue-500" href={links.explore}>Explore</a>!
             </p>
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                It may take some time before the image apers, be patient.
+            </p>
         </MessageBox>}
 
         {/* Form Element */}
