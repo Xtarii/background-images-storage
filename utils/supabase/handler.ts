@@ -24,7 +24,7 @@ export async function readData<T extends TagsFile | ItemsFile>(file: string) : P
  * @returns Result
  */
 export async function writeData<T extends TagsFile | ItemsFile>(file: string, data: T, cache: string = "3600") : Promise<boolean | { status: boolean, data: { id: string, path: string, fullPath: string }}> {
-    return await writeRawData(file, JSON.stringify(data), cache);
+    return await writeRawData(file, JSON.stringify(data, null, 2), cache);
 }
 
 
