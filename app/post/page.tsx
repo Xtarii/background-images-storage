@@ -9,15 +9,31 @@ import SpinningWheel from "@/components/loadingbars/spinning";
 import MessageBox from "@/components/messages/messagebox";
 import { links } from "@/utils/api/routes";
 import { storeItem } from "@/utils/supabase/items/items";
-import { FormEvent, ReactElement, useRef, useState } from "react";
+import { getTags } from "@/utils/supabase/tags/tags";
+import { FormEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { v7 } from "uuid";
 
 
 
 export default function Create() : ReactElement {
     const ref = useRef<HTMLFormElement>(null);
-    const [ loading, setLoading ] = useState<boolean>(false);
+    const [ loading, setLoading ] = useState<boolean>(true);
     const [ messageBox, showMessageBox ] = useState<boolean>(false);
+    const [ tags, setTags ] = useState<string[]>([]);
+
+
+    // Loading Site Data
+    useEffect(() => {
+        (async () => {
+            // Gets and parses tag list
+            const tags = await getTags();
+            const tagsList = []
+            for(const tag in tags.tags) tagsList.push(tag);
+
+            setTags(tagsList);
+            setLoading(false);
+        })()
+    })
 
 
 
@@ -62,8 +78,13 @@ export default function Create() : ReactElement {
         className="max-w-sm mx-auto"
         >
             <div className="mb-5">
-                <label htmlFor="tag" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Image Tag</label>
-                <input type="text" id="tag" name="tag" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="guys" required />
+                <label htmlFor="tag" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select tag</label>
+                <select name="tag" id="tag" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                    <option value="" hidden>None</option>
+
+                    {/* Tags */}
+                    {tags.map((value, key) => <option key={key} value={value}>{value}</option>)}
+                </select>
             </div>
             <div className="mb-5">
                 <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Image Name</label>
@@ -83,7 +104,7 @@ export default function Create() : ReactElement {
                 </label>
             </div>
 
-            <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Upload</button>
+            <button type="submit" className="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Upload</button>
         </form>
     </div>);
 }

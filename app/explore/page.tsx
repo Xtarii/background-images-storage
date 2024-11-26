@@ -37,9 +37,9 @@ export default function Explore() : ReactElement {
 
 
 
-    return(<div className="mt-8 grid grid-cols-4 md:grid-cols-8 gap-4">
+    return(<div className="mt-8 grid grid-cols-1 md:grid-cols-8 gap-4">
         {loading && <SpinningWheel />}
-        {items?.map((value, key) => <div key={key} className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        {items?.map((value, key) => <div key={key} className="m-auto max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             <img src={value.item.imageURL} alt={value.item.title} key={key} className="rounded-t-lg w-full h-auto" />
 
             <div className="p-5">
